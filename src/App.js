@@ -9,7 +9,15 @@ function App() {
     fetch('https://randomuser.me/api/')
     .then(res => res.json())
     .then(data => setRandomUser(data.results[0]))
+  })
+
+  const [user, setUser] = useState([]);
+  useEffect(()=>{
+    fetch('https://jsonplaceholder.typicode.com/users')
+    .then(res => res.json())
+    .then(data => setUser(data))
   },[])
+  
 
   const nayaks = ['Jashim', 'Deepjol', 'Bapparaz', 'Omar Sani', 'Alamgir'];
   
@@ -22,7 +30,11 @@ function App() {
   ];
   return (
     <div className="App">
-      {/* <ShowRandomUser user={randomUser}></ShowRandomUser> */}
+      <ShowRandomUser user={randomUser}></ShowRandomUser>
+      {/* <RandomUser user='Yusa Islam'></RandomUser>
+      {
+        user.map(user => <RandomUser user={user.name}></RandomUser>)
+      } */}
       <MovieCounter></MovieCounter>
       {
         // nayaks.map(nayakName => <Nayak name={nayakName}></Nayak>)
@@ -36,22 +48,41 @@ function App() {
   );
 }
 
-function ShowRandomUser(props) {
+function RandomUser(props) {
   const style ={
     border: "3px solid lightblue",
     margin: "5px",
     padding: "5px"
   }
-  
+  console.log(props.user);
   return(
     <div style={style}>
-      <img src={props.user.picture.large} alt=""/>
-      <h1>Name: <span style={{color:"tomato"}}>{props.user.name.title} {props.user.name.first} {props.user.name.last}</span></h1>
       
-      <h2><span style={{color:"gray"}}>Age: {props.user.dob.age}</span></h2>
+      <h1>
+        Name: <span style={{color:"tomato"}}>{props.user}</span>
+      </h1>
+      
+    </div>
+  )
+}
 
-      <h3><span style={{color:"tomato"}}>Email:</span> {props.user.email}</h3><h3><span style={{color:"tomato"}}>Phone:</span> {props.user.phone}</h3>
-      <h3><span style={{color:"black"}}>Location:</span> <span style={{color:"lightblue"}}>{props.user.location.street.number}, {props.user.location.street.name}, {props.user.location.city}, {props.user.location.country}</span></h3>
+
+function ShowRandomUser(props) {
+  const style ={
+    border: "5px solid lightblue",
+    margin: "20px",
+    padding: "5px"
+  }
+  // optional chaining
+  return(
+    <div style={style}>
+      <img src={props.user?.picture?.large} alt=""/>
+      <h1>Name: <span style={{color:"tomato"}}>{props.user?.name?.title} {props.user?.name?.first} {props.user?.name?.last}</span></h1>
+      
+      <h2><span style={{color:"gray"}}>Age: {props.user?.dob?.age}</span></h2>
+
+      <h3><span style={{color:"tomato"}}>Email:</span> {props.user?.email}</h3><h3><span style={{color:"tomato"}}>Phone:</span> {props.user?.phone}</h3>
+      <h3><span style={{color:"black"}}>Location:</span> <span style={{color:"lightblue"}}>{props.user?.location?.street?.number}, {props.user?.location?.street?.name}, {props.user?.location?.city}, {props.user?.location?.country}</span></h3>
     </div>
   )
 }
